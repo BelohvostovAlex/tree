@@ -11,7 +11,6 @@ const getData = async (url) => {
 const createTree = async () => {
   const data = await getData("./example.json");
   searchNames(data);
-  console.log(Object.values(data.searchProjects.items));
 };
 
 createTree();
@@ -35,8 +34,6 @@ const searchNames = (data) => {
           document.body.append(li);
         }
         searchNames(subData);
-      } else {
-        continue;
       }
     }
   }
