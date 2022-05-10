@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   const objProps = (obj) => {
-    for (let value of Object.values(obj)) {
+    Object.values(obj).forEach((value) => {
       if (isObject(value)) {
         if (value.hasOwnProperty("name")) {
           const li = document.createElement("li");
@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         objProps(value);
       }
-    }
+    });
   };
 
   createTree();
