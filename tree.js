@@ -1,3 +1,5 @@
+const URL = "./example.json";
+
 document.addEventListener("DOMContentLoaded", () => {
   const getData = async (url) => {
     try {
@@ -31,5 +33,47 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   };
 
-  createTree();
+  const createElement = ({ tag, name = "" }) => {
+    const result = document.createElement(tag);
+    result.textContent = name;
+
+    return result;
+  };
+
+  const hasChildren = (children) => !!children.length;
+  const getParent = (el) => el.folders || el.folder || el.child;
+  const getChildren = (el) =>
+    el.items || el.children?.items || el.children?.items || [];
+  const getName = (el) => el.name || el.folder?.name || el.child?.name;
+
+  const getTree = (data) => {
+    const result = data.map((el) => {
+      const name = getName(el);
+      const ul = createElement({ tag: "ul" });
+      const li = createElement({ tag: "li", name });
+
+      const children = getChildren(getParent(el));
+      ul.append(li);
+
+      if (hasChildren(children)) {
+        const nestedList = getTree(children);
+
+        ul.append(...nestedList);
+      }
+
+      return ul;
+    });
+
+    return result;
+  };
+
+  const createTreeDev = async () => {
+    const data = await getData(URL);
+
+    const result = getTree(data.searchProjects.items);
+
+    document.body.append(...result);
+  };
+
+  createTreeDev();
 });
